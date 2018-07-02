@@ -1324,6 +1324,9 @@ window.onload = function() {
           if (typeof window.Applozic.ALSocket !== 'undefined') {
               window.Applozic.ALSocket.disconnect();
               ALStorage.clearMckMessageArray();
+							if(window.Applozic.AlCustomService){
+							window.Applozic.AlCustomService.logout();
+							}
               $applozic.fn.applozic("reset",appOptions);
               $applozic("#mck-sidebox").hide();
               $applozic("#mck-sidebox-launcher").hide();
