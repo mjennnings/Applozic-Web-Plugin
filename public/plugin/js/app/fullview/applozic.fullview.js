@@ -3694,6 +3694,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         function MckMessageLayout() {
             var _this = this;
             var emojiTimeoutId = '';
+            var CLOUD_HOST_URL = "www.googleapis.com";
             var $mck_search = $applozic("#mck-search");
             var $mck_msg_to = $applozic("#mck-msg-to");
             var $file_name = $applozic(".mck-file-lb");
@@ -4470,7 +4471,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         }
                       }
                   } else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
-                    if((msg.fileMeta.url).indexOf("www.googleapis.com") !== -1){
+                    if(((msg.fileMeta).hasOwnProperty("url")) && ((msg.fileMeta.url).indexOf(CLOUD_HOST_URL) !== -1)){
                       // Google Cloud Server
                       var getUrl ;
                       alFileService.generateCloudUrl(msg.fileMeta.blobKey, function(result) {
