@@ -776,6 +776,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 mckStorage.clearMckMessageArray();
                 appOptions.MCK_APP_ID='';
                 appOptions.accessToken='';
+                if(window.Applozic.AlCustomService.logout()){
+  							window.Applozic.AlCustomService.logout();
+  							}
                 $applozic.fn.applozic("reset",appOptions);
                 $applozic(".mck-container").hide();
                 $applozic(".mck-contacts-inner").empty();
@@ -995,7 +998,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 } else {
                     params.isExtMessageList = true;
                     params.pageSize = 1;
-                    mckMessageService.fetchConversationByTopicId(params);
+                    alMessageService.fetchConversationByTopicId(params, function(params){
+										mckMessageService.getMessageList(params);
+										});
                 }
                 return 'success';
             } else {
@@ -3689,6 +3694,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         function MckMessageLayout() {
             var _this = this;
             var emojiTimeoutId = '';
+            var CLOUD_HOST_URL = "www.googleapis.com";
             var $mck_search = $applozic("#mck-search");
             var $mck_msg_to = $applozic("#mck-msg-to");
             var $file_name = $applozic(".mck-file-lb");
@@ -4476,7 +4482,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         }
                       }
                   } else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
-                    if((msg.fileMeta.url).indexOf("www.googleapis.com") !== -1){
+                    if(((msg.fileMeta).hasOwnProperty("url")) && ((msg.fileMeta.url).indexOf(CLOUD_HOST_URL) !== -1)){
                       // Google Cloud Server
                       var getUrl ;
                       alFileService.generateCloudUrl(msg.fileMeta.blobKey, function(result) {
@@ -6181,6 +6187,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         mckGroupService.updateGroupInfo(params);
                     }
                 }
+                var $mck_group_change_role_box = $applozic("#mck-group-change-role-box");
+                $mck_group_change_role_box.removeClass('vis').addClass('n-vis');
             });
             $applozic("#mck-group-info-icon-box .mck-overlay").on('click', function(e) {
                 $mck_group_icon_change.trigger('click');
@@ -6599,7 +6607,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var groupInfo = params.groupInfo;
                 $mck_msg_inner = mckMessageLayout.getMckMessageInner();
                 var group = mckGroupUtils.getGroup(groupId);
-                if (typeof group === 'object') {
+                if (typeof group === 'object'&& groupInfo) {
                     if (groupInfo.imageUrl) {
                         group.imageUrl = groupInfo.imageUrl;
                     }
