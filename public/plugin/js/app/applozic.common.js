@@ -44,8 +44,14 @@ function MckUtils() {
     _this.badgeCountOnLaucher = function(enablebadgecount,totalunreadCount) {
     	   var element = document.getElementById("applozic-badge-count");
        if(enablebadgecount === true && totalunreadCount > 0){
-    	       element.innerHTML = totalunreadCount;
+         if(totalunreadCount < 99){
+             element.innerHTML = totalunreadCount;
     	       element.classList.add("mck-badge-count");
+           }
+          else {
+            element.innerHTML = "99+";
+            element.classList.add("mck-badge-count");
+          }
         }
         if(enablebadgecount === true && totalunreadCount === 0){
         	   element.innerHTML ="";
