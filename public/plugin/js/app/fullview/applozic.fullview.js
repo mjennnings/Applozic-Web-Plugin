@@ -776,6 +776,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 mckStorage.clearMckMessageArray();
                 appOptions.MCK_APP_ID='';
                 appOptions.accessToken='';
+                if(window.Applozic.AlCustomService.logout()){
+  							window.Applozic.AlCustomService.logout();
+  							}
                 $applozic.fn.applozic("reset",appOptions);
                 $applozic(".mck-container").hide();
                 $applozic(".mck-contacts-inner").empty();
@@ -995,7 +998,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 } else {
                     params.isExtMessageList = true;
                     params.pageSize = 1;
-                    mckMessageService.fetchConversationByTopicId(params);
+                    alMessageService.fetchConversationByTopicId(params, function(params){
+										mckMessageService.getMessageList(params);
+										});
                 }
                 return 'success';
             } else {
@@ -3689,6 +3694,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         function MckMessageLayout() {
             var _this = this;
             var emojiTimeoutId = '';
+            var CLOUD_HOST_URL = "www.googleapis.com";
             var $mck_search = $applozic("#mck-search");
             var $mck_msg_to = $applozic("#mck-msg-to");
             var $file_name = $applozic(".mck-file-lb");
@@ -3790,10 +3796,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '</ul>' +
                 '</div>' +
                 '</div>';
-            var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="mck-contact-search-tab" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
+            var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="mck-contact-search-tab" href="#" target="_self" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
             var contactbox = '<li id="li-${contHtmlExpr}" class="person ${contIdExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-mck-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="mck-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time mck-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="mck-row"><div class="blk-lg-8 mck-cont-msg-wrapper preview msgTextExpr"></div>' + '<div class="blk-lg-4 mck-unread-count-box unreadcount ${contUnreadExpr}"><span class="mck-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
             var conversationbox = '<div class="chat mck-message-inner ${contIdExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-mck-conversationid="${conversationExpr}"></div>';
-            var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
+            var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" target="_self" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
             $applozic.template("convTemplate", convbox);
             $applozic.template("messageTemplate", markup);
             $applozic.template('contactTemplate', contactbox);
@@ -4298,7 +4304,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     selfDestructTimeExpr: msg.timeToLive,
                     fileMetaKeyExpr: msg.fileMetaKey,
                     downloadIconVisibleExpr: downloadIconVisible,
-                    fileExpr: alFileService.getFilePath(msg),
+                    fileExpr: this.getFilePath(msg),
                     fileUrlExpr: alFileService.getFileurl(msg),
                     fileNameExpr: fileName,
                     fileSizeExpr: fileSize,
@@ -4450,9 +4456,9 @@ var MCK_CLIENT_GROUP_MAP = [];
               if (typeof msg.fileMeta === "object") {
                   if (msg.fileMeta.contentType.indexOf("image") !== -1) {
                       if (msg.fileMeta.contentType.indexOf("svg") !== -1) {
-                          return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + _this.getFileurl(msg) + '" area-hidden="true"></img></a>';
+                          return '<a href="#" role="link" target="_self" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + _this.getFileurl(msg) + '" area-hidden="true"></img></a>';
                       } else if (msg.contentType === 5) {
-                          return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+                          return '<a href="#" role="link" target="_self" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
                       } else {
                         if((msg.fileMeta).hasOwnProperty("url")){
                           if((msg.fileMeta.url).indexOf("www.googleapis.com") !== -1){
@@ -4462,21 +4468,21 @@ var MCK_CLIENT_GROUP_MAP = [];
                             alFileService.generateCloudUrl(msg.fileMeta.thumbnailBlobKey, function(result) {
                               thumbnailUrl= result;
                             });
-                            return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="" data-blobKey="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + thumbnailUrl + '" area-hidden="true"></img></a>';
+                            return '<a href="#" role="link" target="_self" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="" data-blobKey="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + thumbnailUrl + '" area-hidden="true"></img></a>';
                           }
                           else {
-                            return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true"></img></a>';
+                            return '<a href="#" role="link" target="_self" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true"></img></a>';
                           }
                         }
                           else if((msg.fileMeta.thumbnailUrl === "thumbnail_"+msg.fileMeta.name )){
-                          return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_STORAGE_URL + "/files/thumbnail_" + msg.fileMeta.name + '" area-hidden="true" ></img></a>';
+                          return '<a href="#" role="link" target="_self" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_STORAGE_URL + "/files/thumbnail_" + msg.fileMeta.name + '" area-hidden="true" ></img></a>';
                           }
                         else {
-                          return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true"></img></a>';
+                          return '<a href="#" role="link" target="_self" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true"></img></a>';
                         }
                       }
                   } else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
-                    if((msg.fileMeta.url).indexOf("www.googleapis.com") !== -1){
+                    if(((msg.fileMeta).hasOwnProperty("url")) && ((msg.fileMeta.url).indexOf(CLOUD_HOST_URL) !== -1)){
                       // Google Cloud Server
                       var getUrl ;
                       alFileService.generateCloudUrl(msg.fileMeta.blobKey, function(result) {
@@ -4485,8 +4491,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                       return '<a href="#" target="_self"><video controls class="mck-video-player" onplay="alFileService.updateAudVidUrl(this);" data-cloud-service="google_cloud" data-blobKey="' + msg.fileMeta.blobKey + '">' + '<source src="' + getUrl + '" type="video/mp4">' + '<source src="' + getUrl + '" type="video/ogg"></video></a>';
                     }
                     else {
-                      return '<a href= "#" ><video controls class="mck-video-player">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/ogg"></video></a>';
-                      //    return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><div class="mck-video-box n-vis"><video controls preload><source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="' + msg.fileMeta.contentType + '"></video></div><span class="file-detail"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + alFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
+                      return '<a href= "#" target="_self"><video controls class="mck-video-player">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/ogg"></video></a>';
+                      //    return '<a href="#" role="link" target="_self" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><div class="mck-video-box n-vis"><video controls preload><source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="' + msg.fileMeta.contentType + '"></video></div><span class="file-detail"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + alFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
                       }
                   } else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
                     if(((msg.fileMeta).hasOwnProperty("url")) && ((msg.fileMeta.url).indexOf("www.googleapis.com") !== -1)){
@@ -4501,7 +4507,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     return '<a href="#" target="_self"><audio controls class="mck-audio-player">' + '<source src="' + alFileService.getFileurl(msg) + '" type="audio/ogg">' + '<source src="' + alFileService.getFileurl(msg) + '" type="audio/mpeg"></audio>' + '<p class="mck-file-tag"></p></a>';
                   }
                   } else {
-                      return '<a href="#" role="link" class="file-preview-link" target="_blank"></a>';
+                      return '<a href="#" role="link" class="file-preview-link" target="_self"></a>';
                   }
               }
               return '';
@@ -5915,7 +5921,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }),
                     contentType: 'application/json',
                     success: function(data) {
-                      console.log("test",data);
                         if (data.status === 'success') {
                             if (data.response.length > 0) {
                                 $applozic.each(data.response, function(i, userDetail) {
@@ -6078,10 +6083,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<span class="mck-caret"></span></div>' +
                 '<ul id="mck-group-admin-menu" class="mck-dropdown-menu mck-group-admin-menu mck-tab-menu-box menu-right" role="menu">' +
                 '<li>' +
-                '<a href="#" class="mck-btn-remove-member menu-item" title="${removeMemberLabel}">${removeMemberLabel}</a>' +
+                '<a href="#" target="_self" class="mck-btn-remove-member menu-item" title="${removeMemberLabel}">${removeMemberLabel}</a>' +
                 '</li>' +
                 '<li>' +
-                '<a href="#" class="mck-btn-change-role menu-item" title="${changeRoleLabel}">${changeRoleLabel}</a>' +
+                '<a href="#" target="_self" class="mck-btn-change-role menu-item" title="${changeRoleLabel}">${changeRoleLabel}</a>' +
                 '</li>' + '</ul></div></div>' +
                 '</div>' +
                 '<div id="mck-group-change-role-box" class="mck-row mck-group-change-role-box n-vis">' +
@@ -6095,7 +6100,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '</select>' +
                 '</div></div></div></div></li>';
 
-            var groupMemberSearchContact = '<li id="li-${contHtmlExpr}" class="${contIdExpr} mck-li-group-member" data-mck-id="${contIdExpr}">' + '<a class="mck-add-to-group" href="#" data-mck-id="${contIdExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong></div></div>' + '<div class="mck-row"><div class="blk-lg-12 mck-truncate mck-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div></div>' + '</div></div></a></li>';
+            var groupMemberSearchContact = '<li id="li-${contHtmlExpr}" class="${contIdExpr} mck-li-group-member" data-mck-id="${contIdExpr}">' + '<a class="mck-add-to-group" href="#" target="_self" data-mck-id="${contIdExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong></div></div>' + '<div class="mck-row"><div class="blk-lg-12 mck-truncate mck-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div></div>' + '</div></div></a></li>';
             $applozic.template("groupMemberTemplate", groupContactbox);
             $applozic.template("groupMemberSearchTemplate", groupMemberSearchContact);
             $mck_new_group.on('click', function(e) {
@@ -6182,6 +6187,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         mckGroupService.updateGroupInfo(params);
                     }
                 }
+                var $mck_group_change_role_box = $applozic("#mck-group-change-role-box");
+                $mck_group_change_role_box.removeClass('vis').addClass('n-vis');
             });
             $applozic("#mck-group-info-icon-box .mck-overlay").on('click', function(e) {
                 $mck_group_icon_change.trigger('click');
@@ -6600,7 +6607,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var groupInfo = params.groupInfo;
                 $mck_msg_inner = mckMessageLayout.getMckMessageInner();
                 var group = mckGroupUtils.getGroup(groupId);
-                if (typeof group === 'object') {
+                if (typeof group === 'object'&& groupInfo) {
                     if (groupInfo.imageUrl) {
                         group.imageUrl = groupInfo.imageUrl;
                     }
@@ -7264,7 +7271,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     var fileboxList = [{
                         fileIdExpr: randomId,
                         fileName: params.name,
-                        fileNameExpr: '<a href="#">' + params.name + '</a>',
+                        fileNameExpr: '<a href="#" target="_self">' + params.name + '</a>',
                         fileSizeExpr: alFileService.getFilePreviewSize(file.size)
                     }];
                     $applozic.tmpl("fileboxTemplate", fileboxList).appendTo('#mck-file-box');
