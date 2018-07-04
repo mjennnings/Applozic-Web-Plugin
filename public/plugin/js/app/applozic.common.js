@@ -46,12 +46,11 @@ function MckUtils() {
        if(enablebadgecount === true && totalunreadCount > 0){
          if(totalunreadCount < 99){
              element.innerHTML = totalunreadCount;
-    	       element.classList.add("mck-badge-count");
            }
           else {
             element.innerHTML = "99+";
-            element.classList.add("mck-badge-count");
           }
+          element.classList.add("mck-badge-count");
         }
         if(enablebadgecount === true && totalunreadCount === 0){
         	   element.innerHTML ="";
