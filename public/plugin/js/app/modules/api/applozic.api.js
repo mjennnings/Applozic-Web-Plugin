@@ -1123,6 +1123,7 @@
         ALApiService.fileUpload = function (options) {
             ALApiService.ajax({
                 type: "GET",
+                skipEncryption: true,
                 url: options.data.url,
                 global: false,
                 data: "data=" + new Date().getTime(),
@@ -1261,6 +1262,7 @@
             var subscriptionId = options.data.subscriptionId;
             ALApiService.ajax({
                 url: MCK_BASE_URL + MCK_SW_REGISTER_URL,
+                skipEncryption: true,
                 type: 'post',
                 data: 'registrationId=' + subscriptionId,
                 success: function (data) { },
