@@ -29,14 +29,14 @@ function MckUtils() {
         }).done(function(data) {});
     }
     _this.showElement = function(element) {
-     if ((typeof element !=='undefined' && typeof element !== null) ||(typeof element === Object && element.length !==0)){
+     if (typeof element !== "object" &&(typeof element !=='undefined' && typeof element !== null) ||(element && typeof element === "object" && element.length !==0)){
             element.classList.remove('n-vis');
             element.classList.add('vis');
         }
 
     }
     _this.hideElement= function(element) {
-      if ((typeof element !=='undefined' && typeof element !== null) ||(typeof element === Object && element.length !==0)){
+      if (typeof element !== "object" && (typeof element !=='undefined' && typeof element !== null) ||(element && typeof element === "object" && element.length !==0)){
             element.classList.remove('vis');
             element.classList.add('n-vis');
         }
