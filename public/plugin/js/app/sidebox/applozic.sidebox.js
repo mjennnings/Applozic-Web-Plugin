@@ -6076,7 +6076,7 @@ window.onload = function() {
 													}
 											}
 											mckMessageLayout.addContactsToSearchList(append);
-                      mckGroupLayout.addMembersToGroupSearchList(append);
+                      mckGroupLayout.addMembersToGroupSearchList();
 											return;
 									}
 							},
@@ -6912,7 +6912,7 @@ window.onload = function() {
                 $applozic.tmpl('groupMemberTemplate', contactList).appendTo('#mck-group-member-list');
             };
 
-            _this.addMembersToGroupSearchList = function(append) {
+            _this.addMembersToGroupSearchList = function() {
                 var groupId = $mck_msg_inner.data('mck-id');
                 var isGroup = $mck_msg_inner.data('isgroup');
                 if (isGroup) {
@@ -6939,7 +6939,7 @@ window.onload = function() {
                             if (groupMemberArray.indexOf(contact.contactId) === -1 || (groupMemberArray.indexOf(contact.contactId) !== -1 && group.removedMembersId.indexOf(contact.contactId) !== -1)) {
 													//		mckGroupService.addGroupSearchMember(contact);
 													if ($applozic('#li-user-' + contact.htmlId).length === 0) {
-															mckGroupLayout.addGroupSearchMember(contact,append);
+															mckGroupLayout.addGroupSearchMember(contact);
 													}
 
                                 searchArray.push(contact);
@@ -6956,7 +6956,7 @@ window.onload = function() {
                 }
                 $mck_gms_loading.removeClass('vis').addClass('n-vis');
             };
-           			_this.addGroupSearchMember = function(contact,append) {
+           			_this.addGroupSearchMember = function(contact) {
                 var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
                 var imgsrctag = mckMessageLayout.getContactImageLink(contact, displayName);
                 var contHtmlExpr = 'user-' + contact.htmlId;
@@ -6976,7 +6976,7 @@ window.onload = function() {
                     contNameExpr: displayName
                 }];
                  $applozic.tmpl('groupMemberSearchTemplate', contactList).appendTo('#mck-group-member-search-list');
-								 
+
 						};
 
             _this.loadCreateGroupTab = function() {
