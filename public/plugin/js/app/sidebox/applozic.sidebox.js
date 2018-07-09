@@ -727,9 +727,9 @@ window.onload = function() {
                             var htmlId = mckContactUtils.formatContactId(userId);
                             mckUtils.showElement(document.querySelector("#li-user-" + htmlId + " .mck-ol-status"));
                         }
-                        mckUtils.hideElement(document.querySelector('.mck-user-ol-status.' + htmlId));
-                        if (document.querySelector('.mck-user-ol-status.' + htmlId)) {
-                            document.querySelector('.mck-user-ol-status.' + htmlId).nextElementSibling().innerHTML = '(' + MCK_LABELS['online'] + ')';
+                        mckUtils.hideElement(document.getElementsByClassName('.mck-user-ol-status.' + htmlId));
+                        if (document.getElementsByClassName('.mck-user-ol-status.' + htmlId).length !==0) {
+                            document.getElementsByClassName('.mck-user-ol-status.' + htmlId).nextElementSibling().innerHTML = '(' + MCK_LABELS['online'] + ')';
                         }
                         w.MCK_OL_MAP[userId] = true;
                         alUserService.updateUserStatus({
@@ -758,9 +758,9 @@ window.onload = function() {
                                 mckInit.manageOfflineMessageTime(tabId);
                             }
                         }
-                        mckUtils.hideElement(document.querySelector(".mck-user-ol-status." + contact.htmlId));
-                        if (document.querySelector(".mck-user-ol-status." + contact.htmlId)) {
-                            document.querySelector(".mck-user-ol-status." + contact.htmlId).nextElementSibling.innerHTML = '(Offline)';
+                        mckUtils.hideElement(document.getElementsByClassName(".mck-user-ol-status." + contact.htmlId));
+                        if (document.getElementsByClassName("mck-user-ol-status " + contact.htmlId).length!==0) {
+                            document.getElementsByClassName("mck-user-ol-status." + contact.htmlId).nextElementSibling.innerHTML = '(Offline)';
                         }
                         mckUtils.hideElement(document.querySelector("#li-user-" + htmlId + " .mck-ol-status"));
                         alUserService.updateUserStatus({
