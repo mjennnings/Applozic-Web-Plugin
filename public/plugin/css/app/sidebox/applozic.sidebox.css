@@ -3743,3 +3743,21 @@ fill:white;
 	width:85%;
 	float:right;
 }
+
+.mck-badge-count {
+	width: auto;
+	height: auto;
+	border-radius: 50px;
+	background-color: red;
+	border: 2px solid #fff;
+	text-align: center;
+	color: white;
+	position: absolute;
+	top: -7px;
+	line-height: 20px;
+	font-size: 14px;
+	padding: 0px 4px;
+	z-index: 2243001;
+	right: 0;
+	min-width: 12px;
+}
