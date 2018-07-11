@@ -146,7 +146,7 @@
 
                 if (reqOptions.type.toLowerCase() === 'post') {
                     // encrypt Data
-                    while (options.data.length % 16 != 0) {
+                    while (options.data && options.data.length % 16 != 0) {
                         options.data += ' ';
                     }
                     var aesCtr = new aesjs.ModeOfOperation.ecb(key);
