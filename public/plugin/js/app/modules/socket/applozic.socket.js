@@ -68,6 +68,7 @@
                     ALSocket.stompClient.onclose = function() {
                         ALSocket.disconnect();
                     };
+
                     ALSocket.stompClient.connect("guest", "guest", ALSocket.onConnect, ALSocket.onError, '/');
                     window.addEventListener("beforeunload", function(e) {
                       var check_url=e.target.activeElement.href;
@@ -116,6 +117,7 @@
             if (ALSocket.stompClient && ALSocket.stompClient.connected) {
                 ALSocket.sendStatus(0);
                 ALSocket.stompClient.disconnect();
+                SOCKET='';
             }
         };
         ALSocket.unsubscibeToTypingChannel = function() {
