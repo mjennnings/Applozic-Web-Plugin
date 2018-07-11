@@ -5856,9 +5856,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                                     if (typeof user.userId !== 'undefined') {
                                         var contact = mckMessageLayout.getContact('' + user.userId);
                                         contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(user) : mckMessageLayout.updateContactDetail(contact, user);
+
                                          if(!IS_MCK_OWN_CONTACTS){
                                            MCK_CONTACT_ARRAY.push(contact);
                                          }
+
                                         mckContactNameArray.push([user.userId, contact.displayName]);
                                         if (user.connected) {
                                             w.MCK_OL_MAP[user.userId] = true;

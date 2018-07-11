@@ -233,6 +233,10 @@ window.onload = function() {
                         oInstance.getUserStatus(params);
                         return 'success';
                         break;
+										case 'getGroup':
+		                        oInstance.getGroup(params);
+		                        return 'success';
+		                        break;
                     case 'getGroupList':
                         oInstance.getGroupList(params);
                         return 'success';
@@ -724,10 +728,12 @@ window.onload = function() {
                             var htmlId = mckContactUtils.formatContactId(userId);
                             mckUtils.showElement(document.querySelector("#li-user-" + htmlId + " .mck-ol-status"));
                         }
+
 												mckUtils.hideElement(document.getElementsByClassName('.mck-user-ol-status.' + htmlId));
 	                        if (document.getElementsByClassName('.mck-user-ol-status.' + htmlId).length !==0) {
 	                            document.getElementsByClassName('.mck-user-ol-status.' + htmlId).nextElementSibling().innerHTML = '(' + MCK_LABELS['online'] + ')';
 	                        }
+                      
                         w.MCK_OL_MAP[userId] = true;
                         alUserService.updateUserStatus({
                             'userId': resp.message,
@@ -755,10 +761,12 @@ window.onload = function() {
                                 mckInit.manageOfflineMessageTime(tabId);
                             }
                         }
+
 												mckUtils.hideElement(document.getElementsByClassName(".mck-user-ol-status." + contact.htmlId));
 	                        if (document.getElementsByClassName("mck-user-ol-status " + contact.htmlId).length!==0) {
 	                            document.getElementsByClassName("mck-user-ol-status." + contact.htmlId).nextElementSibling.innerHTML = '(Offline)';
 	                        }
+
                         mckUtils.hideElement(document.querySelector("#li-user-" + htmlId + " .mck-ol-status"));
                         alUserService.updateUserStatus({
                             'userId': userId,
@@ -1375,6 +1383,15 @@ window.onload = function() {
                 }
             }
         };
+				_this.getGroup = function (params) {
+			   if (typeof params.callback === 'function') {
+				    var group = mckGroupUtils.getGroup(params.groupId);
+				    params.callback(group);
+				    return "success";
+			    } else {
+				   return "Callback Function Required";
+			    }
+		    };
         _this.getGroupList = function(params) {
             if (typeof params.callback === 'function') {
                 params.apzCallback = mckGroupLayout.loadGroups;
@@ -1534,7 +1551,7 @@ window.onload = function() {
                 alMessageService.getMessageList(params, function(message){
 									if (typeof message.to !== "undefined" || typeof message.groupId !== "undefined") {
 											var messageFeed = alMessageService.getMessageFeed(message);
-											messageFeeds.push(messageFeed);
+											// messageFeeds.push(messageFeed);
 									}
 								});
                 return 'success';
@@ -3023,7 +3040,7 @@ window.onload = function() {
 									return;
 							}
 							if (messagePxy.to) {
-									if (alUserService.MCK_USER_DETAIL_MAP[messagePxy.to].deletedAtTime || isUserDeleted === true) {
+									if (alUserService.MCK_USER_DETAIL_MAP[messagePxy.to] && alUserService.MCK_USER_DETAIL_MAP[messagePxy.to].deletedAtTime || isUserDeleted === true) {
 											$mck_msg_error.html(MCK_LABELS['user.delete']).removeClass('n-vis').addClass('vis');
 											$applozic("#mck-tab-status").removeClass('vis').addClass('n-vis');
 											$mck_msg_form.removeClass('vis').addClass('n-vis');
@@ -3529,6 +3546,7 @@ window.onload = function() {
                                                     }
                                                 }
                                                 if (currTabId) {
+
                                                     if (alUserService.MCK_USER_DETAIL_MAP[currTabId] &&(alUserService.MCK_USER_DETAIL_MAP[currTabId].deletedAtTime || isUserDeleted ===true)) {
                                                         $mck_msg_error.html(MCK_LABELS['user.delete']).removeClass('n-vis').addClass('vis');
                                                         $applozic("#mck-tab-status").removeClass('vis').addClass('n-vis');
