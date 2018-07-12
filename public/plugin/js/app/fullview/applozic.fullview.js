@@ -1579,7 +1579,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic('#mck-group-member-title').html(MCK_LABELS['members.title']).attr('title', MCK_LABELS['members.title']);
                 $applozic('#mck-group-add-member .blk-lg-9, #mck-gm-search-box .mck-box-title').html(MCK_LABELS['add.members.title']).attr('title', MCK_LABELS['add.members.title']);
                 $applozic('#mck-btn-group-update').html(MCK_LABELS['group.info.update']).attr('title', MCK_LABELS['group.info.update']);
-                $applozic('#mck-btn-leave-group, #mck-btn-group-exit').html(MCK_LABELS['exit.group']).attr('title', MCK_LABELS['exit.group']);
+                $applozic('#mck-leave-group-btn, #mck-btn-group-exit').html(MCK_LABELS['exit.group']).attr('title', MCK_LABELS['exit.group']);
                 $applozic('#mck-typing-label').html(MCK_LABELS['typing']);
                 $applozic('#mck-btn-clear-messages').html(MCK_LABELS['clear.messages']).attr('title', MCK_LABELS['clear.messages']);
                 $applozic('#mck-block-button').html(MCK_LABELS['block.user']).attr('title', MCK_LABELS['block.user']);
@@ -1758,7 +1758,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $mck_btn_group_exit = $applozic("#mck-btn-group-exit");
             var $mck_no_contact_text = $applozic("#mck-no-contact-text");
             var $mck_group_back_link = $applozic("#mck-group-back-link");
-            var $mck_btn_leave_group = $applozic("#mck-btn-leave-group");
+            var $mck_leave_group_btn = $applozic("#mck-leave-group-btn");
             var $mck_sidebox_content = $applozic(".mck-sidebox-content");
             var $mck_no_more_messages = $applozic("#mck-no-more-messages");
             var $mck_gm_search_box = $applozic("#mck-goup-search-box");
@@ -2141,7 +2141,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                       });
                     }
                 });
-                $mck_btn_leave_group.on('click', function(e) {
+                $mck_leave_group_btn.on('click', function(e) {
                     e.preventDefault();
                     $mck_msg_inner = mckMessageLayout.getMckMessageInner();
                     var tabId = $mck_msg_inner.data('mck-id');
