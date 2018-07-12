@@ -733,7 +733,7 @@ window.onload = function() {
 	                        if (document.getElementsByClassName('.mck-user-ol-status.' + htmlId).length !==0) {
 	                            document.getElementsByClassName('.mck-user-ol-status.' + htmlId).nextElementSibling().innerHTML = '(' + MCK_LABELS['online'] + ')';
 	                        }
-                      
+
                         w.MCK_OL_MAP[userId] = true;
                         alUserService.updateUserStatus({
                             'userId': resp.message,
@@ -8008,6 +8008,7 @@ window.onload = function() {
                 mckUtils.ajax({
                     url: MCK_BASE_URL + "/twilio/token",
                     type: 'post',
+										skipEncryption: true,
                     contentType: 'application/x-www-form-urlencoded',
                     data: { "identity": userId, "device": deviceKey },
                     success: function(result) {

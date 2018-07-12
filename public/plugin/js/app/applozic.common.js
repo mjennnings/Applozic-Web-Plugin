@@ -38,7 +38,7 @@ function MckUtils() {
 
     }
     _this.hideElement= function(element) {
-      
+
       if (typeof element !== "object" &&(typeof element !=='undefined' && typeof element !== null) ||(element && typeof element === "object" && element.length !==0)){
 
             element.classList.remove('vis');
@@ -180,13 +180,13 @@ function MckUtils() {
     _this.ajax = function(options) {
         //var reqOptions = Object.assign({}, options);
         var reqOptions = $applozic.extend({}, {}, options);
-        if (this.getEncryptionKey()) {
-            var key = aesjs.util.convertStringToBytes(this.getEncryptionKey());
-            var iv = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+        if (!(options.skipEncryption === true) && mckUtils.getEncryptionKey()) {
+            var key = aesjs.util.convertStringToBytes(mckUtils.getEncryptionKey());
+            var iv = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
             if (reqOptions.type.toLowerCase() === 'post') {
                 // encrypt Data
-                while (options.data.length % 16 != 0) {
+                while (options.data && options.data.length % 16 != 0) {
                     options.data += ' ';
                 }
                 var aesCtr = new aesjs.ModeOfOperation.ecb(key);
@@ -196,7 +196,7 @@ function MckUtils() {
                 reqOptions.data = btoa(encryptedStr);
             }
 
-            reqOptions.success = function(data) {
+            reqOptions.success = function (data) {
                 // Decrypt response
                 var decodedData = atob(data);
                 var arr = [];
@@ -207,13 +207,13 @@ function MckUtils() {
                 var decryptedBytes = aesCtr.decrypt(arr);
                 var res = aesjs.util.convertBytesToString(decryptedBytes);
                 res = res.replace(/\\u0000/g, '').replace(/^\s*|\s*[\x00-\x10]*$/g, '');
-                if (_this.isJsonString(res)) {
+                if (mckUtils.isJsonString(res)) {
                     options.success(JSON.parse(res));
                 } else {
                     options.success(res);
                 }
             }
-        }
+      }
         $applozic.ajax(reqOptions);
     };
 

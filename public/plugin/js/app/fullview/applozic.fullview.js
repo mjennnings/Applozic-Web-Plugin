@@ -8585,6 +8585,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic.ajax({
                     url: MCK_BASE_URL + "/twilio/token",
                     type: 'post',
+                    skipEncryption: true,
                     contentType: 'application/x-www-form-urlencoded',
                     data: { "identity": userId, "device": deviceKey },
                     success: function(result) {
