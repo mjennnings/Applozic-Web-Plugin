@@ -1181,6 +1181,7 @@
         ALApiService.deleteFileMeta = function (options) {
             ALApiService.ajax({
                 url: options.data.url,
+                skipEncryption: true,
                 type: 'post',
                 success: function (response) {
                     if (options.success) {
