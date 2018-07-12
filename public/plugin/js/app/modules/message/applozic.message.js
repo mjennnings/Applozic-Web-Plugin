@@ -426,6 +426,7 @@ function AlMessageService() {
     var messageFeed = {};
     MCK_FILE_URL = window.Applozic.ALApiService.getFileUrl();
     messageFeed.key = message.key;
+    messageFeed.contentType = message.contentType;
     messageFeed.timeStamp = message.createdAtTime;
     messageFeed.message = message.message;
     messageFeed.from = (message.type === 4) ? message.to : MCK_USER_ID;

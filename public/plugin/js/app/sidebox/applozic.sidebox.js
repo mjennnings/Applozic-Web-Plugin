@@ -486,23 +486,23 @@ window.onload = function() {
         var mckVideoCallringTone = null;
         w.MCK_OL_MAP = new Array();
         var events = {
-            'onConnectFailed': function() {},
-            'onConnect': function() {},
-            'onMessageDelivered': function() {},
-            'onMessageRead': function() {},
-            'onMessageDeleted': function() {},
-            'onConversationDeleted': function() {},
-            'onUserConnect': function() {},
-            'onUserDisconnect': function() {},
-            'onConversationReadFromOtherSource': function() {},
-            'onConversationRead': function() {},
-            'onMessageReceived': function() {},
-            'onMessageSentUpdate': function() {},
-            'onMessageSent': function() {},
-            'onUserBlocked': function() {},
-            'onUserUnblocked': function() {},
-            'onUserActivated': function() {},
-            'onUserDeactivated': function() {},
+            'onConnectFailed': function(resp) {},
+            'onConnect': function(resp) {},
+            'onMessageDelivered': function(resp) {},
+            'onMessageRead': function(resp) {},
+            'onMessageDeleted': function(resp) {},
+            'onConversationDeleted': function(resp) {},
+            'onUserConnect': function(resp) {},
+            'onUserDisconnect': function(resp) {},
+            'onConversationReadFromOtherSource': function(resp) {},
+            'onConversationRead': function(resp) {},
+            'onMessageReceived': function(resp) {console.log(resp)},
+            'onMessageSentUpdate': function(resp) {},
+            'onMessageSent': function(resp) {},
+            'onUserBlocked': function(resp) {},
+            'onUserUnblocked': function(resp) {},
+            'onUserActivated': function(resp) {},
+            'onUserDeactivated': function(resp) {},
 			'onTypingStatus': function(resp) {
                 typingSubscriber =window.Applozic.ALSocket.typingSubscriber
 				if (typingSubscriber != null && typingSubscriber.id === resp.headers.subscription) {
@@ -733,7 +733,7 @@ window.onload = function() {
 	                        if (document.getElementsByClassName('.mck-user-ol-status.' + htmlId).length !==0) {
 	                            document.getElementsByClassName('.mck-user-ol-status.' + htmlId).nextElementSibling().innerHTML = '(' + MCK_LABELS['online'] + ')';
 	                        }
-                      
+
                         w.MCK_OL_MAP[userId] = true;
                         alUserService.updateUserStatus({
                             'userId': resp.message,
