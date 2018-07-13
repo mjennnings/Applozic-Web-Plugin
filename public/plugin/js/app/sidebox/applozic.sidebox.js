@@ -3674,6 +3674,11 @@ window.onload = function() {
                                             (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail): mckMessageLayout.updateContactDetail(contact, userDetail);
                                         });
                                     }
+																		if(data.userDetails.length === 0 && callback){
+																		  if (typeof callback === 'function') {
+																		      callback(params);
+																		  }
+																		}
                                     if (data.groupFeeds.length > 0) {
                                         $applozic.each(data.groupFeeds, function(i, groupFeed) {
                                             mckMessageLayout.updateUnreadCount('group_' + groupFeed.id, groupFeed.unreadCount, false);
