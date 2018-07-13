@@ -486,23 +486,23 @@ window.onload = function() {
         var mckVideoCallringTone = null;
         w.MCK_OL_MAP = new Array();
         var events = {
-            'onConnectFailed': function() {},
-            'onConnect': function() {},
-            'onMessageDelivered': function() {},
-            'onMessageRead': function() {},
-            'onMessageDeleted': function() {},
-            'onConversationDeleted': function() {},
-            'onUserConnect': function() {},
-            'onUserDisconnect': function() {},
-            'onConversationReadFromOtherSource': function() {},
-            'onConversationRead': function() {},
-            'onMessageReceived': function() {},
-            'onMessageSentUpdate': function() {},
-            'onMessageSent': function() {},
-            'onUserBlocked': function() {},
-            'onUserUnblocked': function() {},
-            'onUserActivated': function() {},
-            'onUserDeactivated': function() {},
+            'onConnectFailed': function(resp) {},
+            'onConnect': function(resp) {},
+            'onMessageDelivered': function(resp) {},
+            'onMessageRead': function(resp) {},
+            'onMessageDeleted': function(resp) {},
+            'onConversationDeleted': function(resp) {},
+            'onUserConnect': function(resp) {},
+            'onUserDisconnect': function(resp) {},
+            'onConversationReadFromOtherSource': function(resp) {},
+            'onConversationRead': function(resp) {},
+            'onMessageReceived': function(resp) {console.log(resp)},
+            'onMessageSentUpdate': function(resp) {},
+            'onMessageSent': function(resp) {},
+            'onUserBlocked': function(resp) {},
+            'onUserUnblocked': function(resp) {},
+            'onUserActivated': function(resp) {},
+            'onUserDeactivated': function(resp) {},
 			'onTypingStatus': function(resp) {
                 typingSubscriber =window.Applozic.ALSocket.typingSubscriber
 				if (typingSubscriber != null && typingSubscriber.id === resp.headers.subscription) {
@@ -3675,6 +3675,11 @@ window.onload = function() {
                                             (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail): mckMessageLayout.updateContactDetail(contact, userDetail);
                                         });
                                     }
+																		if(data.userDetails.length === 0 && callback){
+																		  if (typeof callback === 'function') {
+																		      callback(params);
+																		  }
+																		}
                                     if (data.groupFeeds.length > 0) {
                                         $applozic.each(data.groupFeeds, function(i, groupFeed) {
                                             mckMessageLayout.updateUnreadCount('group_' + groupFeed.id, groupFeed.unreadCount, false);
