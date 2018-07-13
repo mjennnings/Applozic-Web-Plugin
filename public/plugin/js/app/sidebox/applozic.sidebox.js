@@ -3103,7 +3103,7 @@ window.onload = function() {
 											isTopPanelAdded: isTopPanelAdded
 									};
 									_this.submitMessage(messagePxy, optns);
-							} else if(messagePxy.message && FILE_META.length !== 0 && (messagePxy.contentType === 1 ||messagePxy.contentType === 2)) {
+							} else if((messagePxy.message && FILE_META.length !== 0 && (messagePxy.contentType === 1 ||messagePxy.contentType === 2))&& (!messagePxy.forward)) {
 									 var isTopPanelAdded = ($mck_tab_message_option.hasClass('n-vis'));
 								 var tabId = $mck_msg_inner.data('mck-id');
 								 var randomId = mckUtils.randomId();
@@ -6931,7 +6931,7 @@ window.onload = function() {
                 $applozic.tmpl('groupMemberTemplate', contactList).appendTo('#mck-group-member-list');
             };
 
-            _this.addMembersToGroupSearchList = function() {
+	            _this.addMembersToGroupSearchList = function() {
                 var groupId = $mck_msg_inner.data('mck-id');
                 var isGroup = $mck_msg_inner.data('isgroup');
                 if (isGroup) {

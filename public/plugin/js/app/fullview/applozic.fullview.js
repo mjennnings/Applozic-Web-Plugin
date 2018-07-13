@@ -2518,7 +2518,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         isTopPanelAdded: isTopPanelAdded
                     };
                     _this.submitMessage(messagePxy, optns);
-                } else if(messagePxy.message && FILE_META.length !== 0 && (messagePxy.contentType === 1 ||messagePxy.contentType === 2)) {
+                } else if((messagePxy.message && FILE_META.length !== 0 && (messagePxy.contentType === 1 ||messagePxy.contentType === 2))&& (!messagePxy.forward)) {
             	       var isTopPanelAdded = ($mck_tab_message_option.hasClass('n-vis'));
                    var tabId = $mck_msg_inner.data('mck-id');
                    var randomId = mckUtils.randomId();
@@ -5843,6 +5843,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var mckContactNameArray = [];
                 window.Applozic.ALApiService.ajax({
                     url: MCK_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&orderBy=1",
+                    skipEncryption: true,
                     type: 'get',
                     global: false,
                     success: function(data) {
