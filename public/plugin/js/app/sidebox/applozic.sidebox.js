@@ -2033,6 +2033,7 @@ window.onload = function() {
                 });
                 MCK_TOKEN = data.token;
                 mckUtils.setEncryptionKey(data.encryptionKey);
+								ALStorage.setEncryptionKey(data.encryptionKey);
                 MCK_USER_ID = data.userId;
                 USER_COUNTRY_CODE = data.countryCode;
                 USER_DEVICE_KEY = data.deviceKey;

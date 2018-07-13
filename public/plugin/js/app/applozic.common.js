@@ -159,7 +159,15 @@ function MckUtils() {
 
     this.encryptionKey = null;
     this.getEncryptionKey = function() {
+       var setEncryptionKey;
+      if(this.encryptionKey === null) {
+        setEncryptionKey = ALStorage.getEncryptionKey();
+        return setEncryptionKey;
+      }
+      else {
         return this.encryptionKey;
+      }
+
     }
     this.setEncryptionKey = function(key) {
         this.encryptionKey = key;
