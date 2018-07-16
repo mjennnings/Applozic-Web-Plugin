@@ -6412,6 +6412,8 @@ window.onload = function() {
                             apzCallback: mckGroupLayout.onUpdateGroupInfo
                         }
                         mckGroupService.updateGroupInfo(params);
+												var $mck_group_change_role_box = $applozic("#mck-group-change-role-box");
+               					$mck_group_change_role_box.removeClass('vis').addClass('n-vis');
                     }
                 }
             });
