@@ -6595,7 +6595,7 @@ window.onload = function() {
                         groupMembers += ' ' + name + ',';
                     }
                     if (group.type !== 5 && group.type !== 6 || (isGroupMember && group.type !== 5)) {
-                        groupMembers += ' You';
+                        groupMembers += MCK_LABELS['you'];
                     }
                     if (group.members.length > 30) {
                         groupMembers += ' and ' + (group.members.length - 25) + ' more';
