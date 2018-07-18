@@ -5467,7 +5467,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         e.preventDefault();
                         $applozic(".mck-context-menu").removeClass("vis").addClass("n-vis");
                         $applozic("." + messageKey + " .mck-context-menu").removeClass("n-vis").addClass("vis");
-                        event.returnValue = false;
+                        e.returnValue = false;
                     });
                 }
             };

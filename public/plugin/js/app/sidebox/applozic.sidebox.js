@@ -5634,7 +5634,7 @@ window.onload = function() {
                         e.preventDefault();
                         $applozic(".mck-context-menu").removeClass("vis").addClass("n-vis");
                         $applozic("." + messageKey + " .mck-context-menu").removeClass("n-vis").addClass("vis");
-                        event.returnValue = false;
+                        e.returnValue = false;
                     });
                 }
             };
