@@ -6067,9 +6067,9 @@ window.onload = function() {
         };
 				_this.loadContacts = function() {
 					 var url = CONTACT_LIST_URL + '?startIndex=0&pageSize=50&orderBy=1';
-						mckContactService.ajaxcallForContacts(url);
+					 mckContactService.ajaxcallForContacts(url,false,  mckMessageService.loadMessageList({}));
 				 };
-				_this.ajaxcallForContacts =  function (url,append) {
+				_this.ajaxcallForContacts =  function (url,append,callback) {
 					var mckContactNameArray = [];
 					var $mck_gms_loading = $applozic("#mck-gms-loading");
 					$mck_gms_loading.removeClass('n-vis').addClass('vis');
@@ -6105,6 +6105,9 @@ window.onload = function() {
 									}
 									mckMessageLayout.addContactsToSearchList(append);
                   mckGroupLayout.addMembersToGroupSearchList();
+									if(callback){
+										 callback();
+									}
 									return;
 							}
 					},
