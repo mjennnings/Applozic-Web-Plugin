@@ -11,6 +11,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         notificationSoundLink: '',
         mapStaticAPIkey :'AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw',
         launcher: 'applozic-launcher',
+        emojilibrary: true, // true if you want to load emoticons in chat
         userId: null,
         appId: null,
         userName: null,
@@ -336,6 +337,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
+        var EMOJI_LIBRARY = appOptions.emojilibrary;
         var MCK_CUSTOM_URL = appOptions.customFileUrl;
         var MCK_STORAGE_URL = appOptions.customUploadUrl;
         var MCK_MODE = appOptions.mode;
@@ -474,7 +476,12 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();
-            mckMessageLayout.initEmojis();
+            if(EMOJI_LIBRARY) { // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
+               mckMessageLayout.initEmojis();
+            }
+            else {              // EMOJI_LIBRARY = false ->hide emoticon from chat widget
+               document.getElementById('mck-btn-smiley').setAttribute('class', 'n-vis');
+            }
             if (IS_CALL_ENABLED) {
               notificationtoneoption.loop = true;
              ringToneService = new RingToneService();
