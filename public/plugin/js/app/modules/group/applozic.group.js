@@ -449,7 +449,6 @@ function MckGroupService() {
   };
 
   //function MckMessageLayout
-
   _this.getContactFromGroupOfTwo = function(group, callback) {
     var user;
     for (var i = 0; i < group.members.length; i++) {
@@ -461,7 +460,8 @@ function MckGroupService() {
       if (typeof callback === "function") {
         callback(user);
       }
-      // return mckMessageLayout.fetchContact('' + group.members[i]);
+      return user;
+       //return _this.fetchContact('' + group.members[i]);
     }
   };
   _this.addGroupFromMessage = function(message, update, callback) {
@@ -525,7 +525,7 @@ function MckGroupService() {
       if (group.type === 7) {
         var contact = _this.getContactFromGroupOfTwo(group);
         if (typeof contact !== 'undefined') {
-          displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
+          displayName = alUserService.MCK_USER_DETAIL_MAP[contact];
         }
       }
       if (group.type === 3) {
