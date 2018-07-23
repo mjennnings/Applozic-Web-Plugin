@@ -14,6 +14,7 @@ window.onload = function() {
         notificationSoundLink: '',
         mapStaticAPIkey :'AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw',
         launcher: 'applozic-launcher',
+				emojilibrary: true, // true if you want to load emoticons in chat
         userId: null,
         appId: null,
         userName: null,
@@ -365,6 +366,7 @@ window.onload = function() {
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
+				var EMOJI_LIBRARY = appOptions.emojilibrary;
 				var MCK_CUSTOM_URL = appOptions.customFileUrl;
 				var MCK_STORAGE_URL = appOptions.customUploadUrl;
         var MCK_APP_ID = appOptions.appId;
@@ -1032,7 +1034,12 @@ window.onload = function() {
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();
-            mckMessageLayout.initEmojis();
+						if(EMOJI_LIBRARY) { // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
+							 mckMessageLayout.initEmojis();
+						}
+						else {              // EMOJI_LIBRARY = false ->hide emoticon from chat widget
+							 document.getElementById('mck-textbox-container').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
+						}
             if (IS_CALL_ENABLED) {
              ringToneService = new RingToneService();
              mckVideoCallringTone = ringToneService.loadRingTone(MCK_BASE_URL + "/resources/sidebox/audio/applozic_video_call_ring_tone.mp3");
