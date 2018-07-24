@@ -6154,7 +6154,7 @@ window.onload = function() {
 				        }
 
 				        var response = new Object();
-				        window.Applozic.ALApiService.getUserDetail({data:{userIdList: userIdList},
+								window.Applozic.ALApiService.getUserDetail({data:userIdList,
 				        success: function(data) {
 				            if (data.status === 'success') {
 				                if (data.response.length > 0) {
