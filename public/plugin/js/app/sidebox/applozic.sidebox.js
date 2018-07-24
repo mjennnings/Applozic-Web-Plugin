@@ -1039,6 +1039,7 @@ window.onload = function() {
 						}
 						else {              // EMOJI_LIBRARY = false ->hide emoticon from chat widget
 							 document.getElementById('mck-textbox-container').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
+							 document.getElementById('mck-text-box').classList.add('mck-text-box-width-increase');
 						}
             if (IS_CALL_ENABLED) {
              ringToneService = new RingToneService();
@@ -5641,7 +5642,7 @@ window.onload = function() {
                         e.preventDefault();
                         $applozic(".mck-context-menu").removeClass("vis").addClass("n-vis");
                         $applozic("." + messageKey + " .mck-context-menu").removeClass("n-vis").addClass("vis");
-                        e.returnValue = false;
+                        event.returnValue = false;
                     });
                 }
             };

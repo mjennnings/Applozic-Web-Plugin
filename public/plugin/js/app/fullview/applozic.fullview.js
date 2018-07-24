@@ -481,6 +481,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             }
             else {              // EMOJI_LIBRARY = false ->hide emoticon from chat widget
                document.getElementById('mck-btn-smiley').setAttribute('class', 'n-vis');
+               document.getElementById('mck-text-box').classList.add('mck-text-box-width-increase');
             }
             if (IS_CALL_ENABLED) {
               notificationtoneoption.loop = true;
@@ -5474,7 +5475,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         e.preventDefault();
                         $applozic(".mck-context-menu").removeClass("vis").addClass("n-vis");
                         $applozic("." + messageKey + " .mck-context-menu").removeClass("n-vis").addClass("vis");
-                        e.returnValue = false;
+                        event.returnValue = false;
                     });
                 }
             };
