@@ -3431,6 +3431,18 @@ window.onload = function() {
                     });
                 }
             };
+						_this.dropInUnreadCountUpdate =function(tabId,isgroup){
+							var htmlId
+							if(!isgroup){
+							 htmlId = mckContactUtils.formatContactId(tabId);
+						 }else{
+							 htmlId = tabId;
+						 }
+
+							var prefix = isgroup ?".li-group-" : ".li-user-" ;
+							$applozic(prefix+ htmlId + " .mck-unread-count-text").html(0);
+							$applozic(prefix + htmlId + " .mck-unread-count-box").removeClass('vis').addClass('n-vis');
+						}
 
             _this.loadMessageList = function(params, callback) {
                 var individual = false;
@@ -3607,14 +3619,11 @@ window.onload = function() {
                                     if (!params.startTime) {
                                         if (params.isGroup) {
                                             mckGroupLayout.addGroupStatus(mckGroupUtils.getGroup(params.tabId));
-																						$applozic(".li-group-" + params.tabId + " .mck-unread-count-text").html(0);
-					                                  $applozic(".li-group-" + params.tabId+ " .mck-unread-count-box").removeClass('vis').addClass('n-vis');
+																						_this.dropInUnreadCountUpdate(params.tabId,true);
                                             mckMessageLayout.updateUnreadCount('group_' + params.tabId, 0, true);
                                         } else {
                                             mckMessageLayout.updateUnreadCount('user_' + params.tabId, 0, true);
-																						var htmlId = mckContactUtils.formatContactId(params.tabId);
-																						$applozic(".li-user-" + htmlId + " .mck-unread-count-text").html(0);
-					                                  $applozic(".li-user-" + htmlId + " .mck-unread-count-box").removeClass('vis').addClass('n-vis');
+																						_this.dropInUnreadCountUpdate(params.tabId,false);
                                         }
                                         if (typeof callback === 'function') {
                                             callback(params);
@@ -3686,9 +3695,7 @@ window.onload = function() {
                                                 }
                                             }
                                             mckMessageLayout.updateUnreadCount('user_' + userDetail.userId, userDetail.unreadCount, false);
-																						var htmlId = mckContactUtils.formatContactId(userDetail.userId);
-																						$applozic(".li-user-" + htmlId + " .mck-unread-count-text").html(0);
-					                                  $applozic(".li-user-" + htmlId + " .mck-unread-count-box").removeClass('vis').addClass('n-vis');
+																						_this.dropInUnreadCountUpdate(userDetail.userId,false);
                                             var contact = mckMessageLayout.getContact('' + userDetail.userId);
                                             (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail): mckMessageLayout.updateContactDetail(contact, userDetail);
                                         });
@@ -3701,8 +3708,7 @@ window.onload = function() {
                                     if (data.groupFeeds.length > 0) {
                                         $applozic.each(data.groupFeeds, function(i, groupFeed) {
                                             mckMessageLayout.updateUnreadCount('group_' + groupFeed.id, groupFeed.unreadCount, false);
-																						$applozic(".li-group-" + groupFeed.id + " .mck-unread-count-text").html(0);
-					                                  $applozic(".li-group-" + groupFeed.id+ " .mck-unread-count-box").removeClass('vis').addClass('n-vis');
+																						_this.dropInUnreadCountUpdate(groupFeed.id,true);
                                             mckGroupUtils.addGroup(groupFeed);
                                         });
                                     }
