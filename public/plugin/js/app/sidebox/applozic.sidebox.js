@@ -5299,7 +5299,7 @@ window.onload = function() {
                     contHtmlExpr: contHtmlExpr,
                     contIdExpr: contact.contactId,
                     contTabExpr: isGroupTab,
-										clientGroupIdExpr:clientGroupId,
+										clientGroupIdExpr:contact.clientGroupId ?clientGroupId:'',
 										clientGroupId:contact.clientGroupId,
                     msgCreatedAtTimeExpr: message ? message.createdAtTime : '',
                     mckLauncherExpr: MCK_LAUNCHER,
