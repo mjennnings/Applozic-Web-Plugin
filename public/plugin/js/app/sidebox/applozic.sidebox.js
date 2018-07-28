@@ -3433,7 +3433,7 @@ window.onload = function() {
                     });
                 }
             };
-						_this.dropInUnreadCountUpdate =function(tabId,isgroup){
+						_this.dropInUnreadCountUpdate =function(tabId,isgroup,isClientGroupId){
 							var htmlId
 							if(!isgroup){
 							 htmlId = mckContactUtils.formatContactId(tabId);
@@ -3442,6 +3442,9 @@ window.onload = function() {
 						 }
 
 							var prefix = isgroup ?".li-group-" : ".li-user-" ;
+							if(isgroup && isClientGroupId){
+								prefix =".li-clientgroupid-"
+							}
 							$applozic(prefix+ htmlId + " .mck-unread-count-text").html(0);
 							$applozic(prefix + htmlId + " .mck-unread-count-box").removeClass('vis').addClass('n-vis');
 						}
@@ -3622,7 +3625,7 @@ window.onload = function() {
                                         if (params.isGroup) {
                                             mckGroupLayout.addGroupStatus(mckGroupUtils.getGroup(params.tabId));
 																						_this.dropInUnreadCountUpdate(params.tabId,true);
-																						_this.dropInUnreadCountUpdate(params.clientGroupId,true);
+																						_this.dropInUnreadCountUpdate(params.clientGroupId,true,true);
                                             mckMessageLayout.updateUnreadCount('group_' + params.tabId, 0, true);
                                         } else {
                                             mckMessageLayout.updateUnreadCount('user_' + params.tabId, 0, true);
@@ -3711,7 +3714,7 @@ window.onload = function() {
                                     if (data.groupFeeds.length > 0) {
                                         $applozic.each(data.groupFeeds, function(i, groupFeed) {
                                             mckMessageLayout.updateUnreadCount('group_' + groupFeed.id, groupFeed.unreadCount, false);
-																						_this.dropInUnreadCountUpdate(groupFeed.clientGroupId,true);
+																						_this.dropInUnreadCountUpdate(groupFeed.clientGroupId,true,true);
                                             mckGroupUtils.addGroup(groupFeed);
                                         });
                                     }
@@ -5222,9 +5225,9 @@ window.onload = function() {
                     }
                     if (unreadCount > 0) {
                         $applozic(".li-" + contHtmlExpr + " .mck-unread-count-text").html(unreadCount);
-												$applozic(".li-group-" + clientGroupId + " .mck-unread-count-text").html(unreadCount);
+												$applozic(".li-clientgroupid-" + clientGroupId + " .mck-unread-count-text").html(unreadCount);
                         $applozic(".li-" + contHtmlExpr + " .mck-unread-count-box").removeClass('n-vis').addClass('vis');
-												$applozic(".li-group-" + clientGroupId + " .mck-unread-count-box").removeClass('n-vis').addClass('vis');
+												$applozic(".li-clientgroupid-" + clientGroupId + " .mck-unread-count-box").removeClass('n-vis').addClass('vis');
                     }
 
                     var latestCreatedAtTime = $applozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
@@ -5290,9 +5293,8 @@ window.onload = function() {
                     }
                 }
                 var contHtmlExpr = (isGroupTab) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-								var clientGroupId ;
 								if((isGroupTab)){
-									clientGroupId = 'li-group-'+contact.clientGroupId;
+									clientGroupId = 'li-clientgroupid-'+contact.clientGroupId;
 								}
 
                 var contactList = [{
@@ -5842,7 +5844,7 @@ window.onload = function() {
                         }
                         var contactHtmlExpr = (message.groupId) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 												if(message.groupId && contact.clientGroupId){
-												   $applozic(".li-group-" + contact.clientGroupId + " .mck-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
+												   $applozic(".li-clientgroupid-" + contact.clientGroupId + " .mck-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
 											   }
                         $applozic(".li-" + contactHtmlExpr + " .mck-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
                         if (mckMessageLayout.getUnreadCount(ucTabId) > 0) {
