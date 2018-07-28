@@ -5198,7 +5198,7 @@ window.onload = function() {
             };
             _this.updateContact = function(contact, message, $listId) {
                 var contHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-								var clientGroupId = mckContactUtils.formatContactId('' + contact.clientGroupId);
+								var clientGroupIdHtml = mckContactUtils.formatContactId('' + contact.clientGroupId);
                 var $contactElem = $applozic("#li-" + contHtmlExpr);
                 var currentMessageTime = $contactElem.data('msg-time');
                 if (message && message.createdAtTime > currentMessageTime) {
@@ -5225,9 +5225,9 @@ window.onload = function() {
                     }
                     if (unreadCount > 0) {
                         $applozic(".li-" + contHtmlExpr + " .mck-unread-count-text").html(unreadCount);
-												$applozic(".li-clientgroupid-" + clientGroupId + " .mck-unread-count-text").html(unreadCount);
+												$applozic(".li-clientgroupid-" + clientGroupIdHtml + " .mck-unread-count-text").html(unreadCount);
                         $applozic(".li-" + contHtmlExpr + " .mck-unread-count-box").removeClass('n-vis').addClass('vis');
-												$applozic(".li-clientgroupid-" + clientGroupId + " .mck-unread-count-box").removeClass('n-vis').addClass('vis');
+												$applozic(".li-clientgroupid-" + clientGroupIdHtml + " .mck-unread-count-box").removeClass('n-vis').addClass('vis');
                     }
 
                     var latestCreatedAtTime = $applozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
@@ -5248,6 +5248,7 @@ window.onload = function() {
                 var groupUserCount = contact.userCount;
                 var conversationId = '';
                 var isGroupTab = false;
+								var clientGroupIdExpr;
                 if (typeof message !== 'undefined') {
                     if (message.conversationId) {
                         conversationId = message.conversationId;
@@ -5294,14 +5295,14 @@ window.onload = function() {
                 }
                 var contHtmlExpr = (isGroupTab) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 								if((isGroupTab)){
-									clientGroupId = 'li-clientgroupid-'+contact.clientGroupId;
+									clientGroupIdExpr = 'li-clientgroupid-'+contact.clientGroupId;
 								}
 
                 var contactList = [{
                     contHtmlExpr: contHtmlExpr,
                     contIdExpr: contact.contactId,
                     contTabExpr: isGroupTab,
-										clientGroupIdExpr:contact.clientGroupId ?clientGroupId:'',
+										clientGroupIdExpr:contact.clientGroupId ?clientGroupIdExpr:'',
 										clientGroupId:contact.clientGroupId,
                     msgCreatedAtTimeExpr: message ? message.createdAtTime : '',
                     mckLauncherExpr: MCK_LAUNCHER,
@@ -5325,14 +5326,14 @@ window.onload = function() {
                     $applozic.tmpl("contactTemplate", contactList).appendTo('#' + $listId);
                 }
 								$applozic(".li-" + contHtmlExpr + " .mck-unread-count-text").html(unreadCount);
-								$applozic("." + clientGroupId + " .mck-unread-count-text").html(unreadCount);
+								$applozic("." + clientGroupIdExpr + " .mck-unread-count-text").html(unreadCount);
 						   if (unreadCount > 0) {
 				         $applozic(".li-" + contHtmlExpr + " .mck-unread-count-box").removeClass('n-vis').addClass('vis');
-								 $applozic("." + clientGroupId + " .mck-unread-count-box").removeClass('n-vis').addClass('vis');
+								 $applozic("." + clientGroupIdExpr + " .mck-unread-count-box").removeClass('n-vis').addClass('vis');
 				       }
 				       if (unreadCount === 0) {
 				        $applozic(".li-" + contHtmlExpr + " .mck-unread-count-box").removeClass('vis').addClass('n-vis');
-								$applozic("." + clientGroupId + " .mck-unread-count-box").removeClass('vis').addClass('n-vis');
+								$applozic("." + clientGroupIdExpr + " .mck-unread-count-box").removeClass('vis').addClass('n-vis');
 				       }
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
                 (typeof emoji_template === 'object') ? $textMessage.append(emoji_template): $textMessage.html(emoji_template);
@@ -5843,14 +5844,15 @@ window.onload = function() {
 														mckNotificationService.notifyUser(message);
                         }
                         var contactHtmlExpr = (message.groupId) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
+												var clientGroupIdHtmlExpr = mckContactUtils.formatContactId('' + contact.clientGroupId);
 												if(message.groupId && contact.clientGroupId){
-												   $applozic(".li-clientgroupid-" + contact.clientGroupId + " .mck-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
+												   $applozic(".li-clientgroupid-" + clientGroupIdHtmlExpr + " .mck-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
 											   }
                         $applozic(".li-" + contactHtmlExpr + " .mck-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
                         if (mckMessageLayout.getUnreadCount(ucTabId) > 0) {
                             $applozic(".li-" + contactHtmlExpr + " .mck-unread-count-box").removeClass("n-vis").addClass("vis");
 														if(message.groupId && contact.clientGroupId){
-														   $applozic(".li-group-" + contact.clientGroupId + " .mck-unread-count-text").removeClass("n-vis").addClass("vis");
+														   $applozic(".li-clientgroupid-" + clientGroupIdHtmlExpr + " .mck-unread-count-text").removeClass("n-vis").addClass("vis");
 													   }
                         }
                         alMessageService.sendDeliveryUpdate(message);
