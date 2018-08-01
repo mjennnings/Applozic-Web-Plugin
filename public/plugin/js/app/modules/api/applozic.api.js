@@ -1145,7 +1145,6 @@
        */
 
       ALApiService.sendAttachment = function (options) {
-        console.log(options);
         var attachmentURL = MCK_FILE_URL + FILE_UPLOAD_URL;
         var xhr = new XMLHttpRequest();
           ALApiService.ajax({
