@@ -1143,34 +1143,43 @@
         * var message= {"type":5,"contentType":0,"message":"","to/groupId":"debug4","metadata":{},"source":1};
         * window.Applozic.ALApiService.sendAttachment({data:{ file: file,messagePxy:message} , success: function (result) {}, error: function () { } });
        */
-        ALApiService.sendAttachment = function (options) {
-            var data = new FormData();
-            var xhr = new XMLHttpRequest();
-            xhr.addEventListener('load', function (e) {
-                var file = this.responseText;
-                var message = options.data.messagePxy;
-                if (file) {
-                    message.fileMeta = JSON.parse(file);
-                    Applozic.ALApiService.sendMessage({
-                        data:message,
-                        success: function (response) { console.log(response); },
-                        error: function () { }
-                    });
 
-                }
-            });
-            data.append("file", options.data.file);
-            xhr.open('post', MCK_BASE_URL + ATTACHMENT_UPLOAD_URL, true);
-            xhr.setRequestHeader("UserId-Enabled", true);
-            xhr.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
-            xhr.setRequestHeader("Application-Key", MCK_APP_ID);
-            xhr.setRequestHeader("Device-Key", DEVICE_KEY);
-            if (ACCESS_TOKEN) {
-                xhr.setRequestHeader("Access-Token", ACCESS_TOKEN);
-            }
-            xhr.send(data);
-        }
-
+      ALApiService.sendAttachment = function (options) {
+        var attachmentURL = MCK_FILE_URL + FILE_UPLOAD_URL;
+        var xhr = new XMLHttpRequest();
+          ALApiService.ajax({
+              type: "GET",
+              skipEncryption: true,
+              url: (typeof options.url !== 'undefined') ? options.url : attachmentURL,
+              global: false,
+              data: "data=" + new Date().getTime(),
+              crosDomain: true,
+              success: function (response) {
+                xhr.addEventListener('load', function (e) {
+                  var file = JSON.parse(this.responseText);
+                    var message = options.data.messagePxy;
+                    if (file) {
+                        message.fileMeta = file.fileMeta;
+                        Applozic.ALApiService.sendMessage({
+                            data: {message : message},
+                            success: function (response) { console.log(response); },
+                            error: function () { }
+                        });
+                    }
+                });
+                var fd = new FormData();
+                var file = options.data.file;
+                fd.append('files[]', file);
+                xhr.open("POST", response, true);
+                xhr.send(fd);
+              },
+              error: function (response) {
+                  if (options.error) {
+                      options.error(response);
+                  }
+              }
+          });
+      };
         /**
 
         /**
