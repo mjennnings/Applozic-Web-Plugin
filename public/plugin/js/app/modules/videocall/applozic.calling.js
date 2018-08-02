@@ -54,9 +54,9 @@ function MckCallingService(identity, token, callId, toUserDisplayName,
     // notify applozic server contentType 103 with call duration
     if (isCallHost) {
       _this.disconectedByHost = true;
-      if (_this.callReceivedAt) {
+      if (_this.twilioService.callReceivedAt) {
         // call received. send call end message.
-        var initialTime =   _this.callReceivedAt.getTime();
+        var initialTime =  _this.twilioService.callReceivedAt.getTime();
         var callDurationInMilis = new Date().getTime() - initialTime;
         alMessageService.sendVideoCallEndMessage(callId,
           "CALL_END", 103, false, callDurationInMilis, toUser,
