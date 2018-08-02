@@ -6,6 +6,8 @@
         var mckUtils = new MckUtils();
         var MCK_BASE_URL = 'https://apps.applozic.com';
         var MCK_FILE_URL = 'https://applozic.appspot.com'
+        var CUSTOM_FILE_UPLOAD_URL = '/files/upload/';
+        var MCK_CUSTOM_URL = "https://googleupload.applozic.com";
         var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
         var MESSAGE_LIST_URL = "/rest/ws/message/list";
         var MESSAGE_SEND_URL = "/rest/ws/message/send";
@@ -56,6 +58,7 @@
         var DEVICE_KEY;
         var APP_MODULE_NAME;
         var AUTH_CODE;
+        var MCK_CUSTOM_UPLOAD_SETTINGS;
 
         function getAsUriParameters(data) {
             var url = '';
@@ -81,6 +84,8 @@
         ALApiService.login = function (options) {
             MCK_APP_ID = options.data.alUser.applicationId;
             MCK_BASE_URL = options.data.baseUrl ? options.data.baseUrl : "https://apps.applozic.com";
+            MCK_CUSTOM_UPLOAD_SETTINGS = options.data.alUser.fileupload;
+            console.log(MCK_CUSTOM_UPLOAD_SETTINGS);
             ALApiService.ajax({
                 url: MCK_BASE_URL + INITIALIZE_APP_URL,
                 skipEncryption: true,
@@ -1145,41 +1150,109 @@
        */
 
       ALApiService.sendAttachment = function (options) {
-        var attachmentURL = MCK_FILE_URL + FILE_UPLOAD_URL;
-        var xhr = new XMLHttpRequest();
-          ALApiService.ajax({
-              type: "GET",
-              skipEncryption: true,
-              url: (typeof options.url !== 'undefined') ? options.url : attachmentURL,
-              global: false,
-              data: "data=" + new Date().getTime(),
-              crosDomain: true,
-              success: function (response) {
-                xhr.addEventListener('load', function (e) {
-                  var file = JSON.parse(this.responseText);
-                    var message = options.data.messagePxy;
-                    if (file) {
-                        message.fileMeta = file.fileMeta;
-                        Applozic.ALApiService.sendMessage({
-                            data: {message : message},
-                            success: function (response) { console.log(response); },
-                            error: function () { }
-                        });
-                    }
-                });
-                var fd = new FormData();
-                var file = options.data.file;
-                fd.append('files[]', file);
-                xhr.open("POST", response, true);
-                xhr.send(fd);
-              },
-              error: function (response) {
-                  if (options.error) {
-                      options.error(response);
-                  }
-              }
-          });
+        if(MCK_CUSTOM_UPLOAD_SETTINGS === "awsS3Server"){
+          window.Applozic.ALApiService.sendAttachmentToAWS(options);
+        }
+        else if (MCK_CUSTOM_UPLOAD_SETTINGS ===	"googleCloud") {
+          window.Applozic.ALApiService.sendAttachmentToCloud(options);
+        }
+        else {
+          window.Applozic.ALApiService.sendAttachmentToGoogleServer(options);
+        }
       };
+
+      ALApiService.sendAttachmentToGoogleServer = function(options){
+        var xhr = new XMLHttpRequest();
+        var attachmentURL = MCK_FILE_URL + FILE_UPLOAD_URL;
+        ALApiService.ajax({
+            type: "GET",
+            skipEncryption: true,
+            url: (typeof options.url !== 'undefined') ? options.url : attachmentURL,
+            global: false,
+            data: "data=" + new Date().getTime(),
+            crosDomain: true,
+            success: function (response) {
+              xhr.addEventListener('load', function (e) {
+                var file = JSON.parse(this.responseText);
+                  var message = options.data.messagePxy;
+                  if (file) {
+                      message.fileMeta = file.fileMeta;
+                      Applozic.ALApiService.sendMessage({
+                          data: {message : message},
+                          success: function (response) { console.log(response); },
+                          error: function () { }
+                      });
+                  }
+                });
+                var data = new FormData();
+                var file = options.data.file;
+                data.append('files[]', file);
+                xhr.open("POST", response, true);
+                xhr.send(data);
+                },
+              error: function (response) {
+                if (options.error) {
+                    options.error(response);
+                }
+              }
+        });
+      };
+
+      ALApiService.sendAttachmentToAWS = function(options){
+        var data = new FormData();
+        var xhr = new XMLHttpRequest();
+        var attachmentURL = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
+        xhr.addEventListener('load', function (e) {
+            var file = this.responseText;
+            var message = options.data.messagePxy;
+            if (file) {
+                message.fileMeta = JSON.parse(file);
+                Applozic.ALApiService.sendMessage({
+                    data: {message : message},
+                    success: function (response) { console.log(response); },
+                    error: function () { }
+                });
+             }
+          });
+          data.append("file", options.data.file);
+          xhr.open("post", attachmentURL, true);
+          xhr.setRequestHeader("UserId-Enabled", true);
+          xhr.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
+          xhr.setRequestHeader("Application-Key", MCK_APP_ID);
+          xhr.setRequestHeader("Device-Key", DEVICE_KEY);
+          if (ACCESS_TOKEN) {
+              xhr.setRequestHeader("Access-Token", ACCESS_TOKEN);
+          }
+          xhr.send(data);
+      };
+
+      ALApiService.sendAttachmentToCloud = function(options){
+        var data = new FormData();
+        var xhr = new XMLHttpRequest();
+        var attachmentURL = (typeof options.cloudUploadUrl !== 'undefined') ? options.cloudUploadUrl : MCK_CUSTOM_URL + CUSTOM_FILE_UPLOAD_URL;
+        xhr.addEventListener('load', function (e) {
+          var file = JSON.parse(this.responseText);
+          var message = options.data.messagePxy;
+            if (file) {
+                message.fileMeta = file.fileMeta;
+                Applozic.ALApiService.sendMessage({
+                    data: {message : message},
+                    success: function (response) { console.log(response); },
+                    error: function () { }
+                });
+            }
+          });
+          data.append("files[]", options.data.file);
+          xhr.open("post", attachmentURL, true);
+          xhr.setRequestHeader("UserId-Enabled", true);
+          xhr.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
+          xhr.setRequestHeader("Application-Key", MCK_APP_ID);
+          xhr.setRequestHeader("Device-Key", DEVICE_KEY);
+          if (ACCESS_TOKEN) {
+              xhr.setRequestHeader("Access-Token", ACCESS_TOKEN);
+          }
+          xhr.send(data);
+        };
         /**
 
         /**
