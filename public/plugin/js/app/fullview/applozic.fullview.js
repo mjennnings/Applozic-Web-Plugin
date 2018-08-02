@@ -4186,7 +4186,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                      msgReplyToVisible ='vis';
                       }
                     if(replyMsg.type === 5) {
-                      replyTo = 'you';
+                      replyTo = MCK_LABELS['you'];
                     } else {
                     replyTo = _this.getTabDisplayName(replyMsg.to, false);
                      }
