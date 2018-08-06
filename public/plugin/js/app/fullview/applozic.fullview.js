@@ -4186,7 +4186,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                      msgReplyToVisible ='vis';
                       }
                     if(replyMsg.type === 5) {
-                      replyTo = MCK_LABELS['you'];
+                      replyTo = 'You';
                     } else {
                     replyTo = _this.getTabDisplayName(replyMsg.to, false);
                      }
@@ -4286,7 +4286,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     msgReply: replyMsg   ? replyMsg.message + "\n" : '',
                     msgReplyTo: replyMsg ? replyTo + "\n" : '',
                     msgReplyDivExpr: replyMsg ? 'vis' : 'n-vis',
-                    msgReplyToVisibleExpr: (contact.isGroup && replyMsg) ? 'vis' : 'n-vis',
+                    msgReplyToVisibleExpr: (replyMsg) ? 'vis' : 'n-vis',
                     msgPreview: msgpreview ? _this.getImageForReplyMessage(replyMsg) :"",
                     msgpreviewvisExpr: msgpreviewVis,
                     textreplyVisExpr: textreply,
