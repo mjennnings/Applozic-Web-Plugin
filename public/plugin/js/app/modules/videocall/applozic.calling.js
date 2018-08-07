@@ -56,8 +56,8 @@ function MckCallingService(identity, token, callId, toUserDisplayName,
       _this.disconectedByHost = true;
       if (_this.twilioService.callReceivedAt) {
         // call received. send call end message.
-        var callDurationInMilis = new Date().getTime() -
-          _this.twilioService.callReceivedAt.getTime();
+        var initialTime =  _this.twilioService.callReceivedAt.getTime();
+        var callDurationInMilis = new Date().getTime() - initialTime;
         alMessageService.sendVideoCallEndMessage(callId,
           "CALL_END", 103, false, callDurationInMilis, toUser,
           function(messagePxy) {
@@ -276,10 +276,10 @@ function TwilioService(identity, token, callId, ringTone, isAudioCall,
         "' left the room");
       if (_this.isCallHost) {
         var toUser = $mck_msg_to.val();
-        var callDurationInMilis = new Date().getTime()
-        _this.callReceivedAt.getTime();
+        var initialTime =   _this.callReceivedAt.getTime();
+        var callDurationInMilis = new Date().getTime() - initialTime;
         alMessageService.sendVideoCallEndMessage(callId,
-          "CALL_END", 103, isAudioCall, callDurationInMilis, toUser,
+          "CALL_END", 103, false, callDurationInMilis, toUser,
           function(messagePxy) {
             mckMessageService.sendMessage(messagePxy);
           });
