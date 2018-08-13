@@ -496,7 +496,7 @@ window.onload = function() {
             'onUserDisconnect': function(resp) {},
             'onConversationReadFromOtherSource': function(resp) {},
             'onConversationRead': function(resp) {},
-            'onMessageReceived': function(resp) {console.log(resp)},
+            'onMessageReceived': function(resp) {},
             'onMessageSentUpdate': function(resp) {},
             'onMessageSent': function(resp) {},
             'onUserBlocked': function(resp) {},
