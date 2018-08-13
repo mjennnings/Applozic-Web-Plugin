@@ -2110,6 +2110,7 @@ window.onload = function() {
                 mckGroupService.loadGroups({
                     apzCallback: mckGroupLayout.loadGroups
                 });
+								w.dispatchEvent(new CustomEvent("applozicInitilized",{detail:data,bubbles: true,cancelable: true}));
             };
             _this.validateAppSession = function(userPxy) {
                 var appHeaders = ALStorage.getAppHeaders();
