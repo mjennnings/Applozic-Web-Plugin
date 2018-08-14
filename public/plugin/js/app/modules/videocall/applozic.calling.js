@@ -59,7 +59,7 @@ function MckCallingService(identity, token, callId, toUserDisplayName,
         var initialTime =  _this.twilioService.callReceivedAt.getTime();
         var callDurationInMilis = new Date().getTime() - initialTime;
         alMessageService.sendVideoCallEndMessage(callId,
-          "CALL_END", 103, false, callDurationInMilis, toUser,
+          "CALL_END", 102, false, callDurationInMilis, toUser,
           function(messagePxy) {
             mckMessageService.sendMessage(messagePxy);
           });
@@ -72,7 +72,6 @@ function MckCallingService(identity, token, callId, toUserDisplayName,
           function(messagePxy) {
             mckMessageService.sendMessage(messagePxy);
           });
-
       }
     }
     // no need to handle receiver's call disconnects message.
@@ -279,7 +278,7 @@ function TwilioService(identity, token, callId, ringTone, isAudioCall,
         var initialTime =   _this.callReceivedAt.getTime();
         var callDurationInMilis = new Date().getTime() - initialTime;
         alMessageService.sendVideoCallEndMessage(callId,
-          "CALL_END", 103, false, callDurationInMilis, toUser,
+          "CALL_END", 102, false, callDurationInMilis, toUser,
           function(messagePxy) {
             mckMessageService.sendMessage(messagePxy);
           });
