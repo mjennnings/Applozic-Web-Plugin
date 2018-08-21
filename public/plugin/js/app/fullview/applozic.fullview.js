@@ -4120,6 +4120,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         scrollTop: $mck_msg_inner.prop("scrollHeight")
                     }, 'fast');
                 }
+                var messageBody = document.querySelectorAll(".mck-message-inner.active-chat")[0];
+                messageBody.scrollTop = messageBody.scrollHeight;
             };
             _this.closeConversation = function(data) {
                 if (typeof MCK_DISPLAY_TEXT === 'function') {
