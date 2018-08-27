@@ -3651,3 +3651,7 @@ width:65%;
 .mck-text-box-width-increase {
 	width : calc(100% - 75px) !important;
 }
+
+.mck-msg-box{
+	text-align: left;
+}
