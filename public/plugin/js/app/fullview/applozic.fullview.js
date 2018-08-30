@@ -5302,8 +5302,13 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_msg_sbmt.attr('disabled', false);
                 $mck_file_box.removeClass('vis').removeClass('mck-text-req').addClass('n-vis').attr('required', '').html('');
                 if (keyboard) {
-                    $mck_text_box.focus();
-                    $mck_text_box.blur();
+                  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+ // some code..
+ console.log("test");
+ $mck_text_box.focus().blur();
+}else{
+  $mck_text_box.focus().select();
+}
                 } else {
                     $mck_search.blur();
                     $mck_text_box.blur();
