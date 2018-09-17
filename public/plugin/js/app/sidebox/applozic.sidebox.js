@@ -1898,26 +1898,29 @@ window.onload = function() {
                                 mckCallService.InitilizeVideoClient(MCK_USER_ID, USER_DEVICE_KEY);
                             }
                    }
-									 $applozic(d).on('click', '.imageview', function(e) {
-										 	// click event while opening the image for preview
-											 var $this = $applozic(this);
-											 var that = this;
-											 var href = $this.data('url');
-											 if(href === ""){
-														 var key;
-														 var fileUrl;
-														 key = $this.data("blobkey");
-														 alFileService.generateCloudUrl(key, function(result) {
-															 fileUrl= result;
-															 that.dataset.url=fileUrl;
-															 _this.setImageViewParams(fileUrl, that);
-														 });
 
-											 }
-											 else {
-												 _this.setImageViewParams(href, this);
-											 }
-									 });
+			 						// $applozic('.imageview').click(function(e) {
+										 $applozic(d).on('click', '.imageview', function(e) {
+			 							 // click event while opening the image for preview
+			 							 console.log("abcd");
+			 								var $this = $applozic(this);
+			 								var that = this;
+			 								var href = $this.data('url');
+			 								if(href === ""){
+			 											var key;
+			 											var fileUrl;
+			 											key = $this.data("blobkey");
+			 											alFileService.generateCloudUrl(key, function(result) {
+			 												fileUrl= result;
+			 												that.dataset.url=fileUrl;
+			 												_this.setImageViewParams(fileUrl, that);
+			 											});
+
+			 								}
+			 								else {
+			 									_this.setImageViewParams(href, this);
+			 								}
+			 						});
             };
 
 						$applozic(d).on('click', '.file-preview-link', function(e) {
@@ -1949,13 +1952,15 @@ window.onload = function() {
 						});
 
 						_this.setImageViewParams = function(href, element){
-              $applozic(element).fancybox({
-                  'openEffect': 'none',
-                  'closeEffect': 'none',
-                  'padding': 0,
-                  'href': href,
-                  'type': 'image'
-              });
+
+            $('#Fullscreen').css('height', $(document).outerWidth() + 'px');
+            var src = $(this).attr('src'); //get the source attribute of the clicked image
+            $('#Fullscreen img').attr('src', href); //assign it to the tag for your fullscreen div
+            $('#Fullscreen').fadeIn();
+            $('#Fullscreen').click(function () {
+							$('#Fullscreen img').attr('src', "");
+                $(this).fadeOut(); //this will hide the fullscreen div if you click away from the image.
+            });
             };
 
             _this.onLoginSuccess = function(result, userPxy) {
