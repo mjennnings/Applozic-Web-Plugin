@@ -2815,7 +2815,8 @@ window.onload = function() {
                             $mck_gms_loading.removeClass('n-vis').addClass('vis');
                              if (MCK_GROUP_MEMBER_SEARCH_ARRAY.length > 0||friendListGroup) {
                                 mckGroupLayout.addMembersToGroupSearchList();
-                            } else if (IS_MCK_OWN_CONTACTS) {
+                            }
+														 if (IS_MCK_OWN_CONTACTS) {
                                 if (MCK_CONTACT_ARRAY.length > 0) {
                                     $applozic.each(MCK_CONTACT_ARRAY, function(i, contact) {
                                         MCK_GROUP_MEMBER_SEARCH_ARRAY.push(contact.contactId);
@@ -2826,17 +2827,6 @@ window.onload = function() {
                                     $mck_no_gsm_text.removeClass('n-vis').addClass('vis');
                                 }
                             } else {
-                                alUserService.getUserStatus({
-                                    'callback': mckGroupLayout.addMembersToGroupSearchList
-                                }, function(data){
-																	$applozic.each(data.users, function (i, user) {
-							                        var contact = mckMessageLayout.getContact('' + user.userId);
-							                       contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(user) : mckMessageLayout.updateContactDetail(contact, user);
-							                        MCK_GROUP_MEMBER_SEARCH_ARRAY.push(contact.contactId);
-							                    });
-																});
-                            }
-                        } else {
                             $mck_group_admin_options.removeClass('vis').addClass('n-vis');
                             return;
                         }
