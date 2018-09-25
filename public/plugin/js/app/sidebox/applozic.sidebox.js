@@ -2834,12 +2834,12 @@ window.onload = function() {
                                     $mck_gms_loading.removeClass('vis').addClass('n-vis');
                                     $mck_no_gsm_text.removeClass('n-vis').addClass('vis');
                                 }
-                            } else {
+                            }
+													 }else {
                             $mck_group_admin_options.removeClass('vis').addClass('n-vis');
                             return;
-                        }
                     }
-                });
+                }});
                 $mck_group_member_search.keypress(function(e) {
                     if (e.which === 13) {
                         var userId = $mck_group_member_search.val();
