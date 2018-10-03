@@ -2037,17 +2037,17 @@ window.onload = function() {
 								if (typeof (data.encryptionKey) !== 'undefined'){
 								ALStorage.setEncryptionKey(data.encryptionKey);
 								}
-                
-                if (MCK_WEBSOCKET_URL !== 'undefined'){
+
+                if (typeof MCK_WEBSOCKET_URL !== 'undefined'){
                   data.websocketUrl = MCK_WEBSOCKET_URL;
-                }else{
+                }
+                else{
                   MCK_WEBSOCKET_URL = data.websocketUrl;
                 }
-                
-                if (MCK_WEBSOCKET_PORT !== 'undefined'){
+								
+                if (typeof MCK_WEBSOCKET_PORT !== 'undefined'){
                   data.websocketPort = MCK_WEBSOCKET_PORT;
                 }
-                
                 MCK_USER_ID = data.userId;
                 USER_COUNTRY_CODE = data.countryCode;
                 USER_DEVICE_KEY = data.deviceKey;

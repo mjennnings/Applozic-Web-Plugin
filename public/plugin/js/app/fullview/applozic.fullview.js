@@ -1446,12 +1446,16 @@ var MCK_CLIENT_GROUP_MAP = [];
                 MCK_USER_ID = data.userId;
                 USER_COUNTRY_CODE = data.countryCode;
                 USER_DEVICE_KEY = data.deviceKey;
-                MCK_WEBSOCKET_URL = data.websocketUrl;
-                
-                if (MCK_WEBSOCKET_PORT === undefined) {
+                if (typeof MCK_WEBSOCKET_URL !== 'undefined'){
+                  data.websocketUrl = MCK_WEBSOCKET_URL;
+                }
+                else{
+                  MCK_WEBSOCKET_URL = data.websocketUrl;
+                }
+                if (typeof MCK_WEBSOCKET_PORT == "undefined") {
                     MCK_WEBSOCKET_PORT = (!mckUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674" : "15675";
                 }
-                      
+
                 MCK_IDLE_TIME_LIMIT = data.websocketIdleTimeLimit;
                 MCK_USER_TIMEZONEOFFSET = data.timeZoneOffset;
                 MCK_FILE_URL = data.fileBaseUrl;
