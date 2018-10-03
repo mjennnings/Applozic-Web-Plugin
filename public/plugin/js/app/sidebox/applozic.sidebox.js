@@ -346,7 +346,8 @@ window.onload = function() {
         var FILE_META = [];
         var USER_DEVICE_KEY;
         var USER_COUNTRY_CODE;
-        var MCK_WEBSOCKET_URL;
+        var MCK_WEBSOCKET_URL = appOptions.websocketUrl;
+        var MCK_WEBSOCKET_PORT = appOptions.websocketPort;
         var IS_LOGGED_IN = true;
         var MCK_CONTACT_MAP = [];
         var MCK_TYPING_STATUS = 0;
@@ -2036,10 +2037,20 @@ window.onload = function() {
 								if (typeof (data.encryptionKey) !== 'undefined'){
 								ALStorage.setEncryptionKey(data.encryptionKey);
 								}
+                
+                if (MCK_WEBSOCKET_URL !== 'undefined'){
+                  data.websocketUrl = MCK_WEBSOCKET_URL;
+                }else{
+                  MCK_WEBSOCKET_URL = data.websocketUrl;
+                }
+                
+                if (MCK_WEBSOCKET_PORT !== 'undefined'){
+                  data.websocketPort = MCK_WEBSOCKET_PORT;
+                }
+                
                 MCK_USER_ID = data.userId;
                 USER_COUNTRY_CODE = data.countryCode;
                 USER_DEVICE_KEY = data.deviceKey;
-                MCK_WEBSOCKET_URL = data.websocketUrl;
                 MCK_IDLE_TIME_LIMIT = data.websocketIdleTimeLimit;
                 MCK_USER_TIMEZONEOFFSET = data.timeZoneOffset;
                 MCK_FILE_URL = data.fileBaseUrl;
