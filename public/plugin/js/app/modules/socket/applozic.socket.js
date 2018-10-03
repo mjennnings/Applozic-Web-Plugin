@@ -55,10 +55,10 @@
                 ALSocket.USER_DEVICE_KEY = data.deviceKey;
                 MCK_WEBSOCKET_URL = data.websocketUrl;
                 MCK_WEBSOCKET_PORT = (!mckUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674" : "15675";
-                
-                if (data.websocketPort !== 'undefined') {
+
+                if (typeof data.websocketPort !== 'undefined') {
                     MCK_WEBSOCKET_PORT = data.websocketPort;
-                }   
+                }
             }
 
             ALSocket.events = _events;
