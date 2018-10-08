@@ -4823,7 +4823,7 @@ window.onload = function() {
                 if (typeof name === 'undefined' || name === '') {
                     return '<div class="mck-alpha-contact-image mck-alpha-user"><span class="mck-icon-user"></span></div>';
                 }
-                var first_alpha = name.charAt(0);
+                var first_alpha = name.toString().charAt(0);
                 var letters = /^[a-zA-Z]+$/;
                 if (first_alpha.match(letters)) {
                     first_alpha = first_alpha.toUpperCase();
