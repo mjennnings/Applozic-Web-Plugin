@@ -2044,7 +2044,7 @@ window.onload = function() {
                 else{
                   MCK_WEBSOCKET_URL = data.websocketUrl;
                 }
-								
+
                 if (typeof MCK_WEBSOCKET_PORT !== 'undefined'){
                   data.websocketPort = MCK_WEBSOCKET_PORT;
                 }
@@ -2115,7 +2115,6 @@ window.onload = function() {
                     });
                 }
 								alFileService.init(data);
-								mckContactService.loadContacts();
                 alNotificationService.subscribeToServiceWorker();
                 ALStorage.setAppHeaders(data);
                 mckGroupService.loadGroups({
@@ -3688,11 +3687,6 @@ window.onload = function() {
                                             (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail): mckMessageLayout.updateContactDetail(contact, userDetail);
                                         });
                                     }
-																		if(data.userDetails.length === 0 && callback){
-																		  if (typeof callback === 'function') {
-																		      callback(params);
-																		  }
-																		}
                                     if (data.groupFeeds.length > 0) {
                                         $applozic.each(data.groupFeeds, function(i, groupFeed) {
                                             mckMessageLayout.updateUnreadCount('group_' + groupFeed.id, groupFeed.unreadCount, false);
@@ -3745,6 +3739,9 @@ window.onload = function() {
                                     } else {
                                         $mck_msg_inner.data('datetime', '');
                                     }
+																		if (typeof callback === 'function') {
+																			 callback(params);
+																	  }
                                     if (params.isLaunch) {
                                         mckMessageLayout.updateUnreadCountonChatIcon(data.userDetails);
                                     }
