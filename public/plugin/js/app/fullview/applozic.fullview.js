@@ -2240,17 +2240,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                                     MCK_GROUP_MEMBER_SEARCH_ARRAY.push(contact.contactId);
                                 });
                                 mckGroupLayout.addMembersToGroupSearchList();
-                            } else {
+                            }
+                            else {
                                 $mck_no_gsm_text.removeClass('n-vis').addClass('vis');
-                                alUserService.getUserStatus({
-                                    'callback': mckGroupLayout.addMembersToGroupSearchList
-                                }, function(data){
-            											$applozic.each(data.users, function (i, user) {
-            	                     var contact = mckMessageLayout.getContact('' + user.userId);
-            	                     contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(user) : mckMessageLayout.updateContactDetail(contact, user);
-            	                        MCK_GROUP_MEMBER_SEARCH_ARRAY.push(contact.contactId);
-            	                    });
-            										});
+                                  mckContactService.loadContacts();
                             }
                             $mck_gm_search_box.mckModal();
                         } else {
@@ -2750,7 +2743,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 window.open(fileurl, "_blank");
             };
             $applozic('div').scroll(function() {
-             if ($applozic("#mck-contact-search-list").hasClass('vis') || $applozic('#mck-group-search-list').hasClass('vis')) {
+             if ($applozic("#mck-contact-search-list").hasClass('vis') || $applozic('#mck-box mck-group-search-box').css('display') == 'block') {
                if ($applozic(this).scrollTop() + $applozic(this).innerHeight() >= $applozic(this)[0].scrollHeight) {
                  if (lastFetchTime) {
                    var url = '/rest/ws/user/filter?pageSize=50&orderBy=1&startTime=' + lastFetchTime;
@@ -5202,7 +5195,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     '$searchId': $mck_contact_search_input,
                     'isContactSearch': true
                 });
+                if( $applozic('#mck-goup-search-box').css('display') !== 'block'){
                 $mck_contact_search_box.mckModal();
+                }
             };
             _this.addGroupsToGroupSearchList = function() {
                 var groupsArray = [],
@@ -5888,6 +5883,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                                          if(!IS_MCK_OWN_CONTACTS){
                                            MCK_CONTACT_ARRAY.push(contact);
+                                           MCK_GROUP_MEMBER_SEARCH_ARRAY.push(contact.contactId);
                                          }
 
                                         mckContactNameArray.push([user.userId, contact.displayName]);
