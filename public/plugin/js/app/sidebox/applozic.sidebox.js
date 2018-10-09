@@ -3335,7 +3335,7 @@ window.onload = function() {
             _this.downloadImage = function(fileurl) {
                 window.open(fileurl, "_blank");
             };
-						$applozic('div').scroll(function() {
+						$applozic('.mck-message-inner').scroll(function() {
              if ($applozic("#mck-sidebox-search").hasClass('vis') || $applozic('#mck-gm-search-box').css('display') == 'block') {
                if ($applozic(this).scrollTop() + $applozic(this).innerHeight() >= $applozic(this)[0].scrollHeight) {
                  if (lastFetchTime) {
